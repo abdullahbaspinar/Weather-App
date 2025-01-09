@@ -6,6 +6,7 @@ import './index.css';
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const fetchWeatherData = async (city) => {
     const apiKey = '37bbe92fafbba9eead398d3d7afd35b8'; 
@@ -25,7 +26,7 @@ function App() {
     }
   };
 
-  let getBackgroundVideo = () => {
+  const getBackgroundVideo = () => {
     if (!weatherData) return 'clear.mp4';
     const mainWeather = weatherData.weather[0].main.toLowerCase();
 
@@ -57,14 +58,43 @@ function App() {
 
       <div className="container text-white text-center py-5">
         <h1 className="display-4">Hava Durumu Uygulaması</h1>
-        <p className="lead">İl , ilçe veya ülke seçerek anlık hava durumunu öğrenin!</p>
+        <p className="lead">İl, ilçe veya ülke seçerek anlık hava durumunu öğrenin!</p>
         <WeatherForm fetchWeatherData={fetchWeatherData} />
         {error && <p className="alert alert-danger mt-3">{error}</p>}
         {weatherData && <WeatherDisplay weatherData={weatherData} />}
+
+        {/* Hakkında Butonu */}
+        <button
+          className="btn btn-info mt-4"
+          onClick={() => setShowModal(true)}
+        >
+          Hakkında
+        </button>
+
+        {/* Modal */}
+        {showModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2>Hakkında</h2>
+              <p>
+                Bu uygulama, OpenWeather API'sini kullanarak hava durumu
+                bilgilerini sağlar.
+                <br></br>
+                Oluşturan Kişi: Abdullah Başpınar 2025
+                <br></br>
+                Hacettepe Üniversitesi
+              </p>
+              <button
+                className="btn btn-danger mt-3"
+                onClick={() => setShowModal(false)}
+              >
+                Kapat
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-      
     </div>
-    
   );
 }
 
